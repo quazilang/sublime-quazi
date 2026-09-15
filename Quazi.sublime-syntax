@@ -1,0 +1,31 @@
+%YAML 1.2
+---
+name: Quazi
+file_extensions: [qz]
+scope: source.quazi
+contexts:
+  main:
+    - include: comments
+    - include: strings
+    - match: '@[A-Za-z_]\w*'
+      scope: meta.annotation.quazi
+    - match: '\b(fn|struct|union|enum|trait|impl|type|import|pub|const|var|ret|if|else|while|for|in|match|break|continue|unsafe|as)\b'
+      scope: keyword.control.quazi
+    - match: '\b(true|false|none)\b'
+      scope: constant.language.quazi
+    - match: '\b[A-Z][A-Za-z0-9_]*\b'
+      scope: entity.name.type.quazi
+  comments:
+    - match: '//'
+      push:
+        - meta_scope: comment.line.double-slash.quazi
+        - match: '$'
+          pop: true
+  strings:
+    - match: '"'
+      push:
+        - meta_scope: string.quoted.double.quazi
+        - match: '\\.'
+          scope: constant.character.escape.quazi
+        - match: '"'
+          pop: true
